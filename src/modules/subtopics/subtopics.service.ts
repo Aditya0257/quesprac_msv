@@ -16,4 +16,13 @@ export class SubtopicsService {
     });
     return subtopic;
   }
+
+  async searchSubtopics(searchTerm: string) {
+    const subtopics = this.prisma.questionSubtopic.findMany({
+      where: {
+        subtopic_name: { contains: searchTerm, mode: 'insensitive' },
+      },
+    });
+    return subtopics;
+  }
 }

@@ -7,6 +7,7 @@ import { AttendeeModule } from './modules/attendees/attendee.module';
 import { AnswerModule } from './modules/answers/answer.module';
 import { SubtopicsModule } from './modules/subtopics/subtopics.module';
 import { CategoryModule } from './modules/category/category.module';
+import { OstModule } from './modules/otherstats/otherstat.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { CategoryModule } from './modules/category/category.module';
     AnswerModule,
     SubtopicsModule,
     CategoryModule,
+    OstModule,
   ],
   controllers: [AppController],
   providers: [AppService],

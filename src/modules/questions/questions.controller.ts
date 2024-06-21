@@ -17,6 +17,12 @@ export class QuestionsController {
     return await this.questionService.getQuestionsWithDetails(filters);
   }
 
+  @Get('search')
+  // GET /questions/search?q=searchTerm
+  async searchQuestions(@Query('q') searchTerm: string) {
+    return await this.questionService.searchQuestions(searchTerm);
+  }
+
   @Get('/subtopics')
   async getQuestionsBySubtopics(
     @Query('subtopics') subtopics: string,

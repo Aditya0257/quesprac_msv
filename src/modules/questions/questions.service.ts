@@ -130,6 +130,18 @@ export class QuestionsService {
     });
   }
 
+  async searchQuestions(searchTerm: string) {
+    const questions = this.prisma.question.findMany({
+      where: {
+        OR: [
+          { ques_desc: { contains: searchTerm, mode: 'insensitive' } },
+          { correct_answer: { contains: searchTerm, mode: 'insensitive' } },
+        ],
+      },
+    });
+    return questions;
+  }
+
   async getQuestionById(id: string) {
     const question = await this.prisma.question.findUnique({
       where: {

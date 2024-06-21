@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SubtopicsService } from './subtopics.service';
 
 @Controller('subtopics')
@@ -13,5 +13,10 @@ export class SubtopicsController {
   @Get('/name/:name/details')
   async getSubtopicByNameWithDetails(@Param('name') name: string) {
     return await this.subtopicsService.getSubtopicByName(name, true);
+  }
+
+  @Get('search')
+  async searchSubtopics(@Query('q') searchTerm: string) {
+    return await this.subtopicsService.searchSubtopics(searchTerm);
   }
 }
