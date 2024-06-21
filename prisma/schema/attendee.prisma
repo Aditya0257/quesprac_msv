@@ -1,0 +1,42 @@
+model Attendee {
+    attendee_id            String   @id @default(cuid())
+    user_id                String   @unique
+    name                   String
+    ques_id                String   @unique
+    question               Question @relation("QuestionToAttendee", fields: [ques_id], references: [ques_id])
+    num_of_submissions     Int
+    best_accuracy          Float
+    latest_ans_id          String
+    latest_submission DateTime
+    first_submission  DateTime
+    answers                Answer[] @relation("AttendeeToAnswer")
+}
+
+model Answer {
+    answer_id            String          @id @default(cuid())
+    attendee_id          String
+    attendee             Attendee        @relation("AttendeeToAnswer", fields: [attendee_id], references: [attendee_id])
+    curr_answer          String
+    submission DateTime
+    submission_date     DateTime @default(now()) @db.Date
+    curr_accuracy        Float
+    feedback_recieved    String
+    subtopics_eval       SubtopicEval[]  @relation("AnswerToSubtopicEval")
+    otherStatEval        OtherStatEval[] @relation("AnswerToOtherStatEval")
+}
+
+model SubtopicEval {
+    subtopic_eval_id String           @id @default(cuid())
+    subtopic_id      String           @unique
+    subtopic         QuestionSubtopic @relation(fields: [subtopic_id], references: [subtopic_id])
+    answer_id        String           @unique
+    answer           Answer           @relation("AnswerToSubtopicEval", fields: [answer_id], references: [answer_id])
+}
+
+model OtherStatEval {
+    ost_eval_id String @id @default(cuid())
+    ost_name    String @unique
+    percentage  Float
+    answer_id   String
+    answer      Answer @relation("AnswerToOtherStatEval", fields: [answer_id], references: [answer_id])
+}

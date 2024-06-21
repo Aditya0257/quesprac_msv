@@ -1,0 +1,59 @@
+model Question {
+    ques_id             String             @id @default(cuid())
+    ques_no             Int                @unique
+    ques_desc           String
+    level               String
+    total_submissions   Int
+    correct_answer      String
+    popularity          Float
+    best_accuracy_id    String             @default(cuid())
+    best_accuracy       Float
+    avg_acceptance_rate Float
+    category_id         String
+    category            Category           @relation("CategoryToQuestion", fields: [category_id], references: [category_id])
+    published_date      DateTime
+    user_id             String             @default(cuid()) // publisher_id
+    approver_id         String?            @default(cuid())
+    extra_questions     ExtraQuestion[]    @relation("QuestionToExtraQuestion")
+    subtopics           QuestionSubtopic[] @relation("QuestionToSubtopic")
+    attendees           Attendee[]         @relation("QuestionToAttendee")
+    otherStats          OtherStat[]        @relation("QuestionToOtherStat")
+}
+
+model Category {
+    category_id       String             @id @default(cuid())
+    category_name     String             @unique
+    popularity        Float
+    total_questions   Int
+    questions         Question[]         @relation("CategoryToQuestion")
+    questionSubtopics QuestionSubtopic[] @relation("CategoryToSubtopic")
+}
+
+model QuestionSubtopic {
+    subtopic_id   String        @id @default(cuid())
+    subtopic_name String        @unique
+    category_id   String
+    category      Category      @relation("CategoryToSubtopic", fields: [category_id], references: [category_id])
+    questions     Question[]    @relation("QuestionToSubtopic")
+    subtopicEval  SubtopicEval?
+}
+
+model ExtraQuestion {
+    extra_ques_id   String   @id @default(cuid())
+    ques_id         String   @unique
+    question        Question @relation("QuestionToExtraQuestion", fields: [ques_id], references: [ques_id])
+    extra_ques_desc String
+}
+
+model OtherStat {
+    ost_id              String     @id @default(cuid())
+    ost_name            String     @unique
+    avg_acceptance_rate Float
+    questions           Question[] @relation("QuestionToOtherStat")
+}
+
+// model Bookmarked {
+//     bookmard_id String @id @default(cuid())
+//     user_id String
+//     ques_id String
+// }
